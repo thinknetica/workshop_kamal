@@ -10,11 +10,11 @@ servers:
     - 87.228.32.111
   job:
     hosts:
-      - 87.228.12.147
+      - 192.168.0.4
     cmd: bin/jobs
   cron:
     hosts:
-      - 87.228.12.147
+      - 192.168.0.4
     cmd: bin/jobs -c config/recurring.yml
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
@@ -47,7 +47,7 @@ builder:
 env:
   clear:
     RAILS_LOG_LEVEL: debug
-    DB_HOST: 87.228.12.245
+    DB_HOST: 192.168.0.3
   secret:
     - RAILS_MASTER_KEY
     - WORKSHOP_KAMAL2_DATABASE_PASSWORD
@@ -62,8 +62,8 @@ aliases:
 
 # Use a different ssh user than root
 #
-# ssh:
-#   user: app
+ssh:
+  proxy: root@87.228.32.111
 
 # Use a persistent storage volume.
 #
@@ -87,7 +87,7 @@ asset_path: /rails/public/assets
 accessories:
   db:
     image: postgres:16.1
-    host: 87.228.12.245
+    host: 192.168.0.3
     port: 5432
     env:
       clear:
