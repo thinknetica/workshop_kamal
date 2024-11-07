@@ -43,7 +43,7 @@ builder:
 env:
   clear:
     RAILS_LOG_LEVEL: debug
-  #   DB_HOST: 192.168.0.2
+    DB_HOST: 87.228.12.245
   secret:
     - RAILS_MASTER_KEY
 
@@ -79,7 +79,19 @@ asset_path: /rails/public/assets
 
 # Use accessory services (secrets come from .kamal/secrets).
 #
-# accessories:
+accessories:
+  db:
+    image: postgres:16.1
+    host: 87.228.12.245
+    port: 5432
+    env:
+      clear:
+        POSTGRES_USER: workshop_kamal2
+      secret:
+        - POSTGRES_PASSWORD
+    directories:
+      - data:/var/lib/postgresql/data
+
 #   db:
 #     image: mysql:8.0
 #     host: 192.168.0.2
