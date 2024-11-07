@@ -46,6 +46,7 @@ env:
     DB_HOST: 87.228.12.245
   secret:
     - RAILS_MASTER_KEY
+    - WORKSHOP_KAMAL2_DATABASE_PASSWORD
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal logs -r job" will tail logs from the first server in the job section.
