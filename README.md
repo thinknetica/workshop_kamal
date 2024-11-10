@@ -48,7 +48,7 @@ Things you may want to cover:
 6. kamal registry login -h 192.168.0.5
 7. kamal accessory boot s3
 8. kamal server exec "chown 1001:1001 workshop-kamal2-s3/data" -h 192.168.0.5
-9. test minio console
+9. create and update S3 keys via minio console
 10. kamal server exec "docker exec kamal-proxy kamal-proxy deploy s3 --host s3.kamal-testbed.online --target 192.168.0.5:9000 --tls --health-check-path /minio/health/live" -h 87.228.32.111
 11. kamal server exec "kamal server exec "docker exec kamal-proxy kamal-proxy list" -h 87.228.32.111
 12. rails active_storage:install
