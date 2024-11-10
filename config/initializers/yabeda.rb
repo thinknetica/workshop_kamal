@@ -1,0 +1,1 @@
+Yabeda::ActiveJob.install!
