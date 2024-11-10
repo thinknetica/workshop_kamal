@@ -7,11 +7,14 @@ image: alexander.borisov/workshop-kamal2
 # Deploy to these servers.
 servers:
   web:
-    - 87.228.32.111
+    - 192.168.0.2
   job:
     hosts:
       - 192.168.0.4
     cmd: bin/jobs
+    env:
+      clear:
+        START_METRICS_SERVER: 1
   cron:
     hosts:
       - 192.168.0.4
