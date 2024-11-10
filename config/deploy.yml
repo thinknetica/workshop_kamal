@@ -100,6 +100,7 @@ accessories:
     directories:
       - data:/var/lib/postgresql/data
 
+  # https://grafana.com/grafana/dashboards/1860-node-exporter-full/
   node_exporter:
     image: prom/node-exporter
     port: 9100
@@ -145,6 +146,8 @@ accessories:
 
   # kamal server exec "docker exec kamal-proxy kamal-proxy deploy grafana --host grafana.kamal-testbed.online --target 192.168.0.6:3000 --tls --health-check-path /api/health" -h 87.228.32.111
   # kamal server exec "docker exec kamal-proxy kamal-proxy list" -h 87.228.32.111
+  # https://grafana.com/grafana/dashboards/12342-puma/ + https://github.com/yabeda-rb/yabeda-puma-plugin
+  # https://grafana.com/grafana/dashboards/17303 + https://github.com/Fullscript/yabeda-activejob
   grafana:
     image: grafana/grafana
     host: 192.168.0.6

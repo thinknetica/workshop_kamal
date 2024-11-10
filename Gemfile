@@ -41,6 +41,7 @@ gem "thruster", require: false
 # gem "image_processing", "~> 1.2"
 
 gem "yabeda-prometheus"
+gem "webrick"
 gem "yabeda-activejob"
 gem "yabeda-puma-plugin"
 
