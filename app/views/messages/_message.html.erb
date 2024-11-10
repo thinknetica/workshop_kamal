@@ -10,5 +10,9 @@
     <%= message.body %>
   </p>
 
+  <% if message.image.attached? %>
+    <%= image_tag message.image.variant(resize_to_limit: [100, 100]) %>
+  <% end %>
+
 </div>
 <% end %>

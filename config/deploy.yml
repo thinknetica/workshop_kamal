@@ -97,6 +97,32 @@ accessories:
     directories:
       - data:/var/lib/postgresql/data
 
+  # To access Minio dashboard:
+  # ssh -A -L 9001:192.168.0.5:9001 root@kamal-testbed.online
+  # http://localhost:8080
+  #
+  # Host s3.kamal-testbed
+  #   HostName 192.168.0.5
+  #   ProxyJump kamal-testbed.online
+  #   User root
+  #   IdentityFile ~/.ssh/id_rsa
+  #   Port 22
+  s3:
+    host: 192.168.0.5
+    image: bitnami/minio:latest
+    port: 9000
+    options:
+      publish: 9001:9001
+    env:
+      clear:
+        MINIO_DEFAULT_BUCKETS: workshop-kamal-production
+        MINIO_ROOT_USER: minioadmin
+        MINIO_ROOT_PASSWORD: minioadmin
+        MINIO_SITE_REGION: us-east-1
+        MINIO_SERVER_URL: https://s3.kamal-testbed.online
+    directories:
+      - data:/bitnami/minio/data
+
 #   db:
 #     image: mysql:8.0
 #     host: 192.168.0.2
