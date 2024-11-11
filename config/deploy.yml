@@ -172,8 +172,8 @@ accessories:
       publish:
         - "9090:9090"
 
-  # kamal server exec "docker exec kamal-proxy kamal-proxy deploy grafana --host grafana.kamal-testbed.online --target 192.168.0.6:3000 --tls --health-check-path /api/health" -h 87.228.32.111
-  # kamal server exec "docker exec kamal-proxy kamal-proxy list" -h 87.228.32.111
+  # kamal server exec "docker exec kamal-proxy kamal-proxy deploy grafana --host grafana.kamal-testbed.online --target 192.168.0.6:3000 --tls --health-check-path /api/health" -h 192.168.0.2
+  # kamal server exec "docker exec kamal-proxy kamal-proxy list" -h 192.168.0.2
   # https://grafana.com/grafana/dashboards/12342-puma/ + https://github.com/yabeda-rb/yabeda-puma-plugin
   # https://grafana.com/grafana/dashboards/17303 + https://github.com/Fullscript/yabeda-activejob
   grafana:
