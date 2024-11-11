@@ -240,7 +240,7 @@ accessories:
         # log.level: "debug"
     files:
       - config/deploy/logstash/rails.conf:/usr/share/logstash/pipeline/rails.conf
-      - config/deploy/logstash/activejob.conf:/usr/share/logstash/pipeline/sidekiq.conf
+      - config/deploy/logstash/activejob.conf:/usr/share/logstash/pipeline/activejob.conf
 
   # To connect to Opensearch Dashboards
   # ssh -A -L 5601:192.168.0.8:5601 root@kamal-testbed.online
