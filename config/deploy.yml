@@ -122,7 +122,7 @@ accessories:
         MINIO_ROOT_PASSWORD: minioadmin
         MINIO_SITE_REGION: us-east-1
         MINIO_SERVER_URL: https://s3.kamal-testbed.online
-    volumes:
+    directories:
       - data:/bitnami/minio/data
 
 #   db:
