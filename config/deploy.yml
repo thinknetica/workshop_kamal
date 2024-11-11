@@ -101,7 +101,7 @@ accessories:
 
   # To access Minio dashboard:
   # ssh -A -L 9001:192.168.0.5:9001 root@kamal-testbed.online
-  # http://localhost:8080
+  # http://localhost:9001
   #
   # Host s3.kamal-testbed
   #   HostName 192.168.0.5
