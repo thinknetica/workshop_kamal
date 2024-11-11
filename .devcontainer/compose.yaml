@@ -35,5 +35,25 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
+  # Go to http://localhost:9001 for management console, use minioadmin as login and password
+  s3:
+    image: bitnami/minio:latest
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      - MINIO_DEFAULT_BUCKETS=workshop-kamal-development
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+      - MINIO_SITE_REGION=us-east-1
+    volumes:
+      - s3-data:/bitnami/minio/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
 volumes:
+  s3-data:
   postgres-data:

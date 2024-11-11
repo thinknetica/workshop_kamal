@@ -6,6 +6,24 @@ local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
 
+local_s3: &docker_s3
+  service: S3
+  access_key_id: <%= ENV.fetch('S3_ACCESS_KEY_ID', nil) %>
+  secret_access_key: <%= ENV.fetch('S3_SECRET_ACCESS_KEY', nil) %>
+  endpoint: <%= ENV.fetch('S3_ENDPOINT', 'http://localhost:9000') %>
+  bucket: workshop-kamal-development
+  region: us-east-1
+  force_path_style: true
+
+minio: &minio
+  service: S3
+  access_key_id: <%= ENV.fetch('S3_ACCESS_KEY_ID', nil) %>
+  secret_access_key: <%= ENV.fetch('S3_SECRET_ACCESS_KEY', nil) %>
+  endpoint: <%= ENV.fetch('S3_ENDPOINT', 'https://s3.kamal-testbed.online') %>
+  bucket: <%= ENV.fetch('S3_BUCKET', 'workshop-kamal-production') %>
+  region: <%= ENV.fetch('S3_REGION', 'us-east-1') %>
+  force_path_style: true
+
 # Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:
 #   service: S3

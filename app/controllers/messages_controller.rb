@@ -65,6 +65,6 @@ class MessagesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def message_params
-      params.expect(message: [ :title, :body ])
+      params.expect(message: [ :title, :body, :image ])
     end
 end
