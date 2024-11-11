@@ -7,7 +7,14 @@ image: alexander.borisov/workshop-kamal2
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.2
+    hosts:
+      - 192.168.0.2
+    logging:
+      driver: syslog
+      options:
+        syslog-address: tcp://192.168.0.8:5046
+        syslog-format: rfc3164
+        tag: web
   job:
     hosts:
       - 192.168.0.4
@@ -15,6 +22,12 @@ servers:
     env:
       clear:
         START_METRICS_SERVER: 1
+    logging:
+      driver: syslog
+      options:
+        syslog-address: tcp://192.168.0.8:5047
+        syslog-format: rfc3164
+        tag: jobs
   cron:
     hosts:
       - 192.168.0.4
@@ -49,7 +62,7 @@ builder:
 #
 env:
   clear:
-    RAILS_LOG_LEVEL: debug
+    RAILS_LOG_LEVEL: info
     DB_HOST: 192.168.0.3
   secret:
     - RAILS_MASTER_KEY
@@ -187,6 +200,57 @@ accessories:
         GF_SERVER_ROOT_URL: https://grafana.kamal-testbed.online
       secret:
         - GF_SECURITY_ADMIN_PASSWORD
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    host: 192.168.0.7
+    port: 9200
+    env:
+      clear:
+        cluster.name: opensearch-cluster
+        discovery.type: single-node
+        node.name: opensearch
+        OPENSEARCH_JAVA_OPTS: "-Xms1024m -Xmx1024m"
+        DISABLE_INSTALL_DEMO_CONFIG: "true"
+        DISABLE_SECURITY_PLUGIN: "true"
+        bootstrap.memory_lock: "true"
+        network.host: "0.0.0.0"
+        network.publish_host: "192.168.0.7"
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+    options:
+      publish:
+        - "9300:9300"
+        - "9400:9400"
+      ulimit:
+        - memlock=-1:-1
+        - nofile=65536:65536
+
+  logstash:
+    image: opensearchproject/logstash-oss-with-opensearch-output-plugin:7.16.2
+    host: 192.168.0.8
+    port: 5045
+    options:
+      publish:
+        - "5046:5046"
+        - "5047:5047"
+    env:
+      clear:
+        config.reload.automatic: true
+        config.reload.interval: 60s
+        # log.level: "debug"
+    files:
+      - config/deploy/logstash/rails.conf:/usr/share/logstash/pipeline/rails.conf
+      - config/deploy/logstash/activejob.conf:/usr/share/logstash/pipeline/sidekiq.conf
+
+  # To connect to Opensearch Dashboards
+  # ssh -A -L 5601:192.168.0.8:5601 root@kamal-testbed.online
+  # http://localhost:5601
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards
+    host: 192.168.0.8
+    port: 5601
+    files:
+      - config/deploy/opensearch_dashboards.yml:/usr/share/opensearch-dashboards/config/opensearch_dashboards.yml
 
 #   db:
 #     image: mysql:8.0
