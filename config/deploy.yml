@@ -12,6 +12,9 @@ servers:
     hosts:
       - 192.168.0.4
     cmd: bin/jobs
+    env:
+      clear:
+        START_METRICS_SERVER: 1
   cron:
     hosts:
       - 192.168.0.4
@@ -124,6 +127,66 @@ accessories:
         MINIO_SERVER_URL: https://s3.kamal-testbed.online
     directories:
       - data:/bitnami/minio/data
+
+  # https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+  node_exporter:
+    image: prom/node-exporter
+    port: 9100
+    hosts:
+      - 192.168.0.2
+      - 192.168.0.4
+      - 192.168.0.3
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    cmd: "--path.rootfs=/rootfs --collector.systemd --collector.processes"
+
+  otel_collector:
+    image: otel/opentelemetry-collector:0.100.0
+    port: 9394
+    files:
+      - config/deploy/otel_collector.yml:/etc/otelcol/config.yaml
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    options:
+      user: 0
+    hosts:
+      - 192.168.0.2
+      - 192.168.0.4
+      - 192.168.0.3
+
+  # To access Prometheus dashboard via SSH tunnel:
+  # ssh -L 9090:192.168.0.6:9090 root@kamal-testbed.online
+  # http://localhost:9090
+  prometheus:
+    image: prom/prometheus
+    host: 192.168.0.6
+    port: 9100
+    files:
+      - ./config/deploy/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    volumes:
+      - prometheus-data:/prometheus
+    cmd: "--config.file=/etc/prometheus/prometheus.yml"
+    options:
+      publish:
+        - "9090:9090"
+
+  # kamal server exec "docker exec kamal-proxy kamal-proxy deploy grafana --host grafana.kamal-testbed.online --target 192.168.0.6:3000 --tls --health-check-path /api/health" -h 87.228.32.111
+  # kamal server exec "docker exec kamal-proxy kamal-proxy list" -h 87.228.32.111
+  # https://grafana.com/grafana/dashboards/12342-puma/ + https://github.com/yabeda-rb/yabeda-puma-plugin
+  # https://grafana.com/grafana/dashboards/17303 + https://github.com/Fullscript/yabeda-activejob
+  grafana:
+    image: grafana/grafana
+    host: 192.168.0.6
+    port: 3000
+    volumes:
+      - grafana_db:/var/lib/grafana
+    env:
+      clear:
+        GF_SERVER_ROOT_URL: https://grafana.kamal-testbed.online
+      secret:
+        - GF_SECURITY_ADMIN_PASSWORD
 
 #   db:
 #     image: mysql:8.0

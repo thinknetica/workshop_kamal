@@ -41,6 +41,11 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 gem "aws-sdk-s3", require: false
 
+gem "yabeda-prometheus"
+gem "webrick"
+gem "yabeda-activejob"
+gem "yabeda-puma-plugin"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
